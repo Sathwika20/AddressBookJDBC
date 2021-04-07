@@ -10,8 +10,21 @@ public class AddressBookService {
     private static final String user = "root";
     private static final String password = "sathWIKA@20";
     public static List<Contact> contacts = new ArrayList<>();
+    public static Connection connection;
+
+
+    public static void getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, user, password);
+            Statement statement = connection.createStatement();
+        } catch (SQLException | ClassNotFoundException throwable) {
+            throwable.printStackTrace();
+        }
+    }
 
     public static List<Contact> retrieveAllEntriesFromDataBase() {
+        getConnection();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
@@ -39,6 +52,26 @@ public class AddressBookService {
             throwable.printStackTrace();
         }
         return contacts;
+    }
+
+    public static String updateAddressBook(String first_name, String phone_number) {
+        getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("update address_book set phone_number=? where first_name =?");
+            preparedStatement.setString(1, phone_number);
+            preparedStatement.setString(2,first_name);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        retrieveAllEntriesFromDataBase();
+        for (Contact data: contacts) {
+            if (data.firstName.equals(first_name))
+                return data.phoneNumber;
+        }
+        return null;
     }
 
 }
