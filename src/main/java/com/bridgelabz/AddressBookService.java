@@ -23,7 +23,7 @@ public class AddressBookService {
         }
     }
 
-    public static List<Contact> retrieveAllEntriesFromDataBase() {
+    public static List<Contact> retrieveAllEntriesFromDataBase(String sql) {
         getConnection();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -54,7 +54,7 @@ public class AddressBookService {
         return contacts;
     }
 
-    public static String updateAddressBook(String first_name, String phone_number) {
+    public static String updateAddressBook(String first_name, String phone_number, String sql) {
         getConnection();
         PreparedStatement preparedStatement = null;
         try {
@@ -63,10 +63,10 @@ public class AddressBookService {
             preparedStatement.setString(2,first_name);
             preparedStatement.executeUpdate();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
-        retrieveAllEntriesFromDataBase();
+        retrieveAllEntriesFromDataBase(sql);
         for (Contact data: contacts) {
             if (data.firstName.equals(first_name))
                 return data.phoneNumber;
