@@ -5,6 +5,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 public class AddressBookServiceTest {
@@ -48,6 +51,23 @@ public class AddressBookServiceTest {
         String updated_name = addressBookService.addContactInAddressBookDatabase(first_name,"Sita", "Uppal", "Hyderabad", "Telangana",
                 502888, "sita@.gmail.com", "FellowShip","Friend", Date.valueOf("2021-01-01"));
         Assert.assertEquals(first_name,updated_name);
+    }
+    @Test
+    public void givenContacts_WhenAddedToDB_ShouldMatchEmployeeEntries() {
+        Contact[] arrayOfContact = {
+                new Contact("Srujana", "Kulkarni", "Mehdipatnam", "Rangareddy", "Telangana", "502673", "9783546431",
+                        "srujana@gmail.com", "Profession", Date.valueOf("2021-03-25")),
+                new Contact("Priya", "Deshmukh", "Ramanthapur", "Kamareddy", "Telangana", "503256", "9356742731",
+                        "priya@gmail.com", "Friend", Date.valueOf("2021-03-28"))};
+        AddressBookService addressBookService = new AddressBookService();
+        Instant start = Instant.now();
+        addressBookService.addDetailsWithThreads(Arrays.asList(arrayOfContact));
+        Instant end = Instant.now();
+        System.out.println("Duration without thread : " + Duration.between(start, end));
+        Instant threadStart = Instant.now();
+        addressBookService.addDetailsWithThreads(Arrays.asList(arrayOfContact));
+        Instant threadEnd = Instant.now();
+        System.out.println("Duration with Thread : " + Duration.between(threadStart, threadEnd));
     }
 
 
