@@ -74,4 +74,34 @@ public class AddressBookService {
         return null;
     }
 
+    public String addContactInAddressBookDatabase(String first_name, String last_name, String Address, String city, String state, int zip, String email, String address_book_name, String Type, Date Start) {
+        getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("insert into address_book(first_name,Last_Name,Address,City,State," +
+                    "Zip,Email,AddressBook_Name,Type,start) values(?,?,?,?,?,?,?,?,?,?)");
+
+            preparedStatement.setString(1, first_name);
+            preparedStatement.setString(2, last_name);
+            preparedStatement.setString(3, Address);
+            preparedStatement.setString(4, city);
+            preparedStatement.setString(5, state);
+            preparedStatement.setInt(6, zip);
+            preparedStatement.setString(7, email);
+            preparedStatement.setString(8, address_book_name);
+            preparedStatement.setString(9, Type);
+            preparedStatement.setDate(10, (java.sql.Date) Start);
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        retrieveAllEntriesFromDataBase("select * from address_book;");
+        for (Contact data : contacts) {
+            if (data.firstName.equals(first_name))
+                return data.firstName;
+        }
+        return null;
+    }
+
+
 }

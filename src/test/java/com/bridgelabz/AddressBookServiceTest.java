@@ -4,6 +4,7 @@ package com.bridgelabz;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.sql.Date;
 import java.util.List;
 
 public class AddressBookServiceTest {
@@ -39,6 +40,14 @@ public class AddressBookServiceTest {
         List<Contact> dataByCity = addressBookService2.retrieveAllEntriesFromDataBase(sql2);
         Assert.assertEquals(1, dataByState.size());
         Assert.assertEquals(3, dataByCity.size());
+    }
+    @Test
+    public void addContactInAddressBookDatabaseTest() {
+        AddressBookService addressBookService = new AddressBookService();
+        String first_name = "Sita";
+        String updated_name = addressBookService.addContactInAddressBookDatabase(first_name,"Sita", "Uppal", "Hyderabad", "Telangana",
+                502888, "sita@.gmail.com", "FellowShip","Friend", Date.valueOf("2021-01-01"));
+        Assert.assertEquals(first_name,updated_name);
     }
 
 
