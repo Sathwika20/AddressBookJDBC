@@ -23,4 +23,15 @@ public class AddressBookJsonTest {
                 .body("firstName", Matchers.is("Sathwika "));
         Assert.assertEquals(201, response.getStatusCode());
     }
+    @Test
+    public void testToUpdateContactDataInJSONServer(){
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body("{\"firstName\": \"Srujana\",\"lastName\": \"Kulkarni\",\"address\": \"AshokNagar\",\"city\": \"Hyderabad\",\"state\": \"Telangana\",\"zip\": \"502888\",\"phoneNumber\": \"9245647823\",\"email\": \"srujana@gmail.com\",\"personType\": \"Friend\"}")
+                .when().put("http://localhost:3000/addressbook/4");
+        response.then()
+                .body("address", Matchers.is("AshokNagar"));
+        Assert.assertEquals(200, response.getStatusCode());
+    }
 }
