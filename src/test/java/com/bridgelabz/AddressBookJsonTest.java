@@ -20,7 +20,7 @@ public class AddressBookJsonTest {
                 .body("{\"firstName\": \"Sathwika\",\"lastName\": \"Gopiraj\",\"address\": \"HarithaEnclave\",\"city\": \"Kamareddy\",\"state\": \"Telangana\",\"zip\": \"503111\",\"phoneNumber\": \"7036101828\",\"email\": \"sathwika@gmail.com\",\"personType\": \"Friend\"}")
                 .when().post("http://localhost:3000/addressbook");
         response.then()
-                .body("firstName", Matchers.is("Sathwika"));
+                .body("firstName", Matchers.is("Sathwika "));
         Assert.assertEquals(201, response.getStatusCode());
     }
 }
